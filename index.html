@@ -6,6 +6,27 @@
 </head>
 <body style="margin: 0; overflow-y: hidden; overflow-x: hidden;">
 <canvas id="my-canvas" style="width: 100vw; height: 100vw"></canvas>
-<script></script>
+<script>
+    let canvas = document.getElementById("my-canvas");
+    // gets WebGl API
+    let gl = canvas.getContext("webgl");
+
+    gl.canvas.width = canvas.clientWidth;
+    gl.canvas.height = canvas.clientHeight;
+    gl.viewport(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    gl.clearColor(1.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    // loads our WebAssembly file and then calls our WebAssembly's main function
+    let imports = {
+        env: {
+            log_number: function (number) { console.log("Number from Rust: ", number); }
+        }
+    };
+    WebAssembly.instantiateStreaming(fetch('target/wasm32-unknown-unknown/debug/examples/game.wasm'), imports).then(function (result) {
+        result.instance.exports.main();
+    })
+</script>
 </body>
 </html>
