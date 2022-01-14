@@ -7,12 +7,19 @@ pub enum Key {
 }
 
 extern "C" {
-    pub fn js_clear_screen_to_color(red: f32, green: f32, blue: f32, alpha: f32);
+    fn js_clear_screen_to_color(red: f32, green: f32, blue: f32, alpha: f32);
+    fn js_draw_rectangle(x: f32, y: f32, width: f32, height: f32);
 }
 
 pub fn clear_screen_to_color(red: f32, green: f32, blue: f32, alpha: f32) {
     unsafe {
         js_clear_screen_to_color(red, green, blue, alpha)
+    }
+}
+
+pub fn draw_rectangle(x: f32, y: f32, width: f32, height: f32) {
+    unsafe {
+        js_draw_rectangle(x, y, width, height);
     }
 }
 
